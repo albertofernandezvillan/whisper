@@ -1,3 +1,29 @@
+# OpenAI Whisper - CPU
+
+Improving transcription performance of OpenAI Whisper for CPU based deployment.
+See this repository for more information about this: [Whisper - CPU](https://github.com/MiscellaneousStuff/openai-whisper-cpu)
+
+## Usage:
+
+```python
+quantized_model = torch.quantization.quantize_dynamic(
+    model_fp32, {torch.nn.Linear}, dtype=torch.qint8
+)
+```
+
+However the whisper model is designed to be adaptable, i.e.
+it can run at different precisions, so the `Linear()` layer contains
+custom code to account for this. However, this is not required for
+the quantized model. So changes in `Linear()` layers is performed in 
+[`whisper/whisper/model.py`](https://github.com/openai/whisper/commit/4b54d17fdc75107ee36d434882b37d04b138c57f)
+In summary, `Linear()` layer in the OpenAI Whisper model needs to be changed to `nn.Linear()`.
+
+## Setup
+
+```
+pip install https://github.com/albertofernandezvillan/whisper.git
+```
+
 # Whisper
 
 [[Blog]](https://openai.com/blog/whisper)
